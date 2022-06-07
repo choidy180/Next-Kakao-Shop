@@ -91,6 +91,7 @@ export const GlobalStyle = createGlobalStyle`
         opacity: 0.8;
         padding: 6px;
         border-radius: 50%;
+        cursor: pointer;
     }
     .FeedRightBtn{
         position: absolute;
@@ -102,6 +103,7 @@ export const GlobalStyle = createGlobalStyle`
         opacity: 0.8;
         padding: 6px;
         border-radius: 50%;
+        cursor: pointer;
     }
     .pc-tablet-only {
         display: block;

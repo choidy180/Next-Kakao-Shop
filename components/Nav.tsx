@@ -84,10 +84,10 @@ const Title = styled.span`
   font-size: 1.2rem;
   cursor: pointer;
   text-align: center;
-  padding: 4px 12px;
+  padding: 7px 12px 4px 12px;
   color: #fff;
   background-color: #000;
-  border-radius: 5rem;
+  border-radius: 24px;
 `
 const Bottom = styled.div`
   width: 100%;
