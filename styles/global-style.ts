@@ -81,7 +81,28 @@ export const GlobalStyle = createGlobalStyle`
             fill: #f2f3f4;
         }
     }
-
+    .FeedLeftBtn{
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(calc(-100% + 12px));
+        z-index: 9999;
+        background-color: white;
+        opacity: 0.8;
+        padding: 6px;
+        border-radius: 50%;
+    }
+    .FeedRightBtn{
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(calc(-100% + 12px));
+        z-index: 9999;
+        background-color: white;
+        opacity: 0.8;
+        padding: 6px;
+        border-radius: 50%;
+    }
     .pc-tablet-only {
         display: block;
         ${media.mobile} {
