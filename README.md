@@ -1,1 +1,1 @@
-next-styled
+Next-Kakao-Shop
