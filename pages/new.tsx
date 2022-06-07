@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import styled from "styled-components";
 import Nav from "../components/Nav";
 
-const Home: NextPage = () => {
+const New: NextPage = () => {
   return (
     <Container>
       <Nav/>
-      Next-Today
+      Next-New
     </Container>
   )
 }
@@ -19,4 +19,4 @@ const Container = styled.div`
   background-color: #fff;
   box-sizing: border-box;
 `
-export default Home;
+export default New;
