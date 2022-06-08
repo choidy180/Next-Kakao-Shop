@@ -19,17 +19,14 @@ export default function Feed({
   uuid,
 }: FeedProps){
   const container_Carousel:any = useRef();
+  const [imageCount, setImageCount] = useState(8);
   const [nowX, setNowX] = useState(0);
   const clickLeftButton = () => {
-    nowX !== 0 && setNowX((prop) => prop + 12.5);
+    nowX !== 0 && setNowX((prop) => prop + (100 / imageCount));
   }
   const clickRightButton = () => {
     console.log(nowX);
-    nowX !== -87.5 && setNowX((prop) => prop - 12.5);
-  }
-  const viewInfo=()=>{
-    console.log(nowX !== 0);
-    console.log(nowX);
+    nowX !== -87.5 && setNowX((prop) => prop - (100 / imageCount));
   }
   useEffect(()=>{
     container_Carousel.current.style.transform=`translateX(${nowX}%)`;
@@ -54,7 +51,7 @@ export default function Feed({
       <Head>
         <HeadImage>
           <ThumbWrapper>
-            <ThumbBox onClick={viewInfo}>
+            <ThumbBox>
               <Image
                 alt={name}
                 src={`/images/thumb/${thumbnail}`}
@@ -71,33 +68,38 @@ export default function Feed({
       </Head>
       <ContentContainer>
         <ContentWrapper>
-            <ContentBox ref={container_Carousel}>
-              {[0,1,2,3,4,5,6,0].map((_ , i) =>(
-                <ContentImage key={i}>
-                  <Image
-                    alt={String(i)}
-                    src={`/images/feed/${uuid}/media_${_}.png`}
-                    layout="fill"
-                    objectFit="contain"
-                  />
-                </ContentImage>
-              ))}
-            </ContentBox> 
+          <ContentBox count={imageCount} ref={container_Carousel}>
+            {[0,1,2,3,4,5,6,0].map((_ , i) =>(
+              <ContentImage key={i}>
+                <Image
+                  alt={String(i)}
+                  src={`/images/feed/${uuid}/media_${_}.png`}
+                  layout="fill"
+                  objectFit="contain"
+                  quality={100}
+                />
+              </ContentImage>
+            ))}
+          </ContentBox> 
         </ContentWrapper>
-        <ChevronBackOutline
-          width={"16px"}
-          height={"16px"}
-          color={"#000"}
-          cssClasses={"FeedLeftBtn"}
-          onClick={clickLeftButton}
-        />
-        <ChevronForwardOutline
-          width={"16px"}
-          height={"16px"}
-          color={"#000"}
-          cssClasses={"FeedRightBtn"}
-          onClick={clickRightButton}
-        />
+        {imageCount !== 1 &&
+          <ChevronBackOutline
+            width={"16px"}
+            height={"16px"}
+            color={"#000"}
+            cssClasses={"FeedLeftBtn"}
+            onClick={clickLeftButton}
+          />
+        }
+        {imageCount !== 1 &&
+          <ChevronForwardOutline
+            width={"16px"}
+            height={"16px"}
+            color={"#000"}
+            cssClasses={"FeedRightBtn"}
+            onClick={clickRightButton}
+          />
+        }
       </ContentContainer>
       <FeedInfo>
         <FeedActive>
@@ -134,6 +136,7 @@ export default function Feed({
                 src={`/images/product/${_.image}`}
                 layout="fill"
                 objectFit="contain"
+                quality={100}
               />
             </ProductImage>
             <ProductText>
@@ -245,7 +248,7 @@ const ContentBox = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 800%;
+  width: ${(props) => (props.count * 100)+"%"};
   height: 100%;
   display: flex;
   transition: all 0.4s ease-in-out;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MenuOutline, Moon, SearchOutline } from "react-ionicons";
+import { ChevronBackOutline, HomeOutline, MenuOutline, Moon, SearchOutline } from "react-ionicons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -8,22 +8,47 @@ export default function Nav({}){
   return (
     <Container>
       <Top>
-        <Left>
-          <MenuOutline
-            width="30px"
-            height="30px"
-            color="#000"
-          />
-        </Left>
+        {(path === "/" || path === "/new" || path === "/hot" || path === "/mypage") ?
+          <Left> 
+            <MenuOutline
+              width="30px"
+              height="30px"
+              color="#000"
+            />
+          </Left> : 
+          <Left>
+            <Link href={"/"}>
+              <ChevronBackOutline
+                width="26px"
+                height="26px"
+                color="#000"
+              />
+            </Link>
+            <Link href={"/"}>
+              <HomeOutline
+                width="26px"
+                height="26px"
+                color="#000"
+              />
+            </Link>
+          </Left>
+        }
         <Center>
-          <Title>KAKAO FRIENDS</Title>
+          {!path.includes("/search") ? 
+            <Title>KAKAO FRIENDS</Title> :
+            <SubTitlte>검색</SubTitlte>
+          }
         </Center>
         <Right>
-          <SearchOutline
-            width="22px"
-            height="22px"
-            color="#000"
-          />
+          {!path.includes("/search") &&
+            <Link href={"/search"}>
+              <SearchOutline
+                width="22px"
+                height="22px"
+                color="#000"
+              />
+            </Link>
+          } 
           <Moon
             width="22px"
             height="22px"
@@ -31,20 +56,22 @@ export default function Nav({}){
           />
         </Right>
       </Top>
-      <Bottom>
-        <Link href="/">
-          {path === "/" ? <TabFocus>오늘</TabFocus> : <Tab>오늘</Tab>}
-        </Link>
-        <Link href="/new">
-          {path === "/new" ? <TabFocus>신규</TabFocus> : <Tab>신규</Tab>}
-        </Link>
-        <Link href="/hot">
-          {path === "/hot" ? <TabFocus>인기</TabFocus> : <Tab>인기</Tab>}
-        </Link>
-        <Link href="mypage">
-          {path === "/mypage" ? <TabFocus>마이</TabFocus> : <Tab>마이</Tab>}
-        </Link>
-      </Bottom>
+      {(path === "/" || path === "/new" || path === "/hot" || path === "/mypage") &&
+        <Bottom>
+          <Link href="/">
+            {path === "/" ? <TabFocus>오늘</TabFocus> : <Tab>오늘</Tab>}
+          </Link>
+          <Link href="/new">
+            {path === "/new" ? <TabFocus>신규</TabFocus> : <Tab>신규</Tab>}
+          </Link>
+          <Link href="/hot">
+            {path === "/hot" ? <TabFocus>인기</TabFocus> : <Tab>인기</Tab>}
+          </Link>
+          <Link href="mypage">
+            {path === "/mypage" ? <TabFocus>마이</TabFocus> : <Tab>마이</Tab>}
+          </Link>
+        </Bottom>
+      }
     </Container>  
   )
 }
@@ -66,11 +93,12 @@ const Container = styled.div`
   }
 `
 const Top = styled.div`
-  padding: 8px 16px;
+  padding: 16px 20px 8px 20px;
   box-sizing: border-box;
 `
 const Left = styled.div`
   justify-content:flex-start;
+  gap: 6px;
 `
 const Center = styled.div`
   font-family: 'NEXON Lv1 Gothic OTF Bold';
@@ -89,9 +117,15 @@ const Title = styled.span`
   background-color: #000;
   border-radius: 24px;
 `
+const SubTitlte = styled.span`
+  font-size: 1.6rem;
+  text-align: center;
+  color: #000;
+  font-family: 'NEXON Lv1 Gothic OTF';
+`
 const Bottom = styled.div`
   width: 100%;
-  margin-top: 4px;
+  margin-top: 14px;
   padding: 0 6px;
   display: flex;
   justify-content: center;
