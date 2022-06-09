@@ -24,7 +24,7 @@ export const GlobalStyle = createGlobalStyle`
         font-style: normal;
     }
     @font-face {
-        font-family: 'MaplestoryOTFLight';
+        font-family: 'Maplestory OTF Light';
         src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/MaplestoryOTFLight.woff') format('woff');
         font-weight: normal;
         font-style: normal;

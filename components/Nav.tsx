@@ -8,7 +8,7 @@ export default function Nav({}){
   return (
     <Container>
       <Top>
-        {(path === "/" || path === "/new" || path === "/hot" || path === "/mypage") ?
+        {(path === "/" || path === "/new" || path === "/hot" || path.includes("/mypage")) ?
           <Left> 
             <MenuOutline
               width="30px"
@@ -56,7 +56,7 @@ export default function Nav({}){
           />
         </Right>
       </Top>
-      {(path === "/" || path === "/new" || path === "/hot" || path === "/mypage") &&
+      {(path === "/" || path === "/new" || path === "/hot" || path.includes("/mypage")) &&
         <Bottom>
           <Link href="/">
             {path === "/" ? <TabFocus>오늘</TabFocus> : <Tab>오늘</Tab>}
@@ -67,8 +67,8 @@ export default function Nav({}){
           <Link href="/hot">
             {path === "/hot" ? <TabFocus>인기</TabFocus> : <Tab>인기</Tab>}
           </Link>
-          <Link href="mypage">
-            {path === "/mypage" ? <TabFocus>마이</TabFocus> : <Tab>마이</Tab>}
+          <Link href="/mypage/basket">
+            {path.includes("/mypage") ? <TabFocus>마이</TabFocus> : <Tab>마이</Tab>}
           </Link>
         </Bottom>
       }
