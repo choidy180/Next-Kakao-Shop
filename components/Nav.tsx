@@ -5,6 +5,10 @@ import Link from "next/link";
 
 export default function Nav({}){
   let path = useRouter().pathname;
+  const viewClickMenu = () => {
+    document.getElementById("viewingMenu").classList.toggle("clickFocus");
+    document.getElementById("viewingMenuDetail").classList.toggle("FocusMenuDetail");
+  }
   return (
     <Container>
       <Top>
@@ -14,6 +18,7 @@ export default function Nav({}){
               width="30px"
               height="30px"
               color="#000"
+              onClick={viewClickMenu}
             />
           </Left> : 
           <Left>

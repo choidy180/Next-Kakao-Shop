@@ -53,6 +53,7 @@ export const GlobalStyle = createGlobalStyle`
         scrollbar-width: none;
     }
     body{
+        position: relative;
         width: 100%;
         margin: 0px;
         padding: 0px;
@@ -80,6 +81,12 @@ export const GlobalStyle = createGlobalStyle`
             cursor: default;
             fill: #f2f3f4;
         }
+    }
+    .clickFocus{
+        display: block !important;
+    }
+    .FocusMenuDetail{
+        left: 0px !important;
     }
     .FeedLeftBtn{
         position: absolute;

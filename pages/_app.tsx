@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global-style";
 import { theme } from '../styles/theme';
+import MenuOver from '../components/MenuOverlay';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <GlobalStyle/>
       <ThemeProvider theme={theme}>
+        <MenuOver/>
         <Component {...pageProps} />
       </ThemeProvider>
     </>
