@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { NotificationsOutline } from "react-ionicons";
 import styled from "styled-components";
 
-export default function MenuOver(){
+export default function MenuOver(props){
+  const [userInfo, setUserInfo] = useState<any>(null);
   const MenuCloseRouter = () => {
-    document.getElementById("viewingMenu")?.classList.toggle("clickFocus");
-    document.getElementById("viewingMenuDetail")?.classList.toggle("FocusMenuDetail");
+    document.querySelector(".clickFocus") && document.getElementById("viewingMenu")?.classList.toggle("clickFocus");
+    document.querySelector(".FocusMenuDetail") && document.getElementById("viewingMenuDetail")?.classList.toggle("FocusMenuDetail");
   }
   const router = useRouter();
   router.events?.on('routeChangeStart', MenuCloseRouter)
@@ -13,26 +16,25 @@ export default function MenuOver(){
     document.getElementById("viewingMenu").classList.toggle("clickFocus");
     document.getElementById("viewingMenuDetail").classList.toggle("FocusMenuDetail");
   }
+  const viewInfo = () => {
+    console.log(typeof(props));
+  }
   return (
     <>
       <ClickContent id="viewingMenuDetail">
         <Head>
           <Name>
-            <Link href={"/login"}>
-              로그인
-            </Link>
-            이 필요해요!
+            {userInfo ? 
+              <Link href={"/login"}>
+                로그인이 필요해요!
+              </Link> : "최은지님 반갑습니다!"
+            }
           </Name>
           <HeadIcon>
-            {/* <NotificationsOutline
-              width={"26px"}
-              height={"26px"}
-              color={"#000"}
-            /> */}
             <span>비회원 주문 조회 &gt;</span>
           </HeadIcon>
         </Head>
-        <img src="/images/banner/MenuDetail_Banner.png" alt="" />
+        <img src="/images/banner/MenuDetail_Banner.png" alt="" onClick={viewInfo}/>
         <MenuTabBox>
           <MenuTab>장바구니 내역</MenuTab>
           <MenuTab>주문·배송 내역</MenuTab>

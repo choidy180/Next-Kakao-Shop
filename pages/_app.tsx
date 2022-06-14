@@ -4,8 +4,25 @@ import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "../styles/global-style";
 import { theme } from '../styles/theme';
 import MenuOver from '../components/MenuOverlay';
+import { useEffect, useState } from 'react';
+import { authService } from '../firebase/firebase';
 
 function MyApp({ Component, pageProps }) {
+  const [init, setInit] = useState<Boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(false);
+  const [userObj, setUserObj] = useState(null);
+  useEffect(()=>{
+    authService.onAuthStateChanged((user) => {
+      if(user){
+        setIsLoggedIn(true);
+        setUserObj(user);
+      } else {
+        setIsLoggedIn(false);
+        setUserObj(null);
+      }
+      setInit(true);
+    })
+  })
   return (
     <>
       <Head>
@@ -14,8 +31,8 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <GlobalStyle/>
       <ThemeProvider theme={theme}>
-        <MenuOver/>
-        <Component {...pageProps} />
+        <MenuOver {...isLoggedIn} {...userObj}/>
+        <Component {...pageProps} {...isLoggedIn} {...userObj}/>
       </ThemeProvider>
     </>
   )
