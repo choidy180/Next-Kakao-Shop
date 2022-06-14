@@ -1,7 +1,14 @@
-import { NotificationsOutline } from "react-ionicons";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 export default function MenuOver(){
+  const MenuCloseRouter = () => {
+    document.getElementById("viewingMenu")?.classList.toggle("clickFocus");
+    document.getElementById("viewingMenuDetail")?.classList.toggle("FocusMenuDetail");
+  }
+  const router = useRouter();
+  router.events?.on('routeChangeStart', MenuCloseRouter)
   const MenuClose = () => {
     document.getElementById("viewingMenu").classList.toggle("clickFocus");
     document.getElementById("viewingMenuDetail").classList.toggle("FocusMenuDetail");
@@ -10,7 +17,12 @@ export default function MenuOver(){
     <>
       <ClickContent id="viewingMenuDetail">
         <Head>
-          <Name>로그인이 필요해요!</Name>
+          <Name>
+            <Link href={"/login"}>
+              로그인
+            </Link>
+            이 필요해요!
+          </Name>
           <HeadIcon>
             {/* <NotificationsOutline
               width={"26px"}
@@ -78,9 +90,13 @@ const Head = styled.div`
   align-items: center;
   position: relative;
 `
-const Name = styled.span`
+const Name = styled.p`
   font-size: 1.4rem;
-  cursor: pointer;
+  span {
+    cursor: pointer;
+    font-family: 'NEXON Lv1 Gothic OTF Bold';
+    color: #000;
+  }
 `
 const HeadIcon = styled.div`
   position: absolute;

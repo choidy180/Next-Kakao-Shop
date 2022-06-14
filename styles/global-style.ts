@@ -51,6 +51,12 @@ export const GlobalStyle = createGlobalStyle`
         }
         -ms-overflow-style: none;
         scrollbar-width: none;
+        width: 100vw;
+        height: auto;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
     }
     body{
         position: relative;
@@ -81,6 +87,9 @@ export const GlobalStyle = createGlobalStyle`
             cursor: default;
             fill: #f2f3f4;
         }
+    }
+    a{
+        color: #000;
     }
     .clickFocus{
         display: block !important;

@@ -4,6 +4,7 @@ const handler = async(_, res) => {
   try {
     const results = await sql_query(`
       SELECT * FROM user
+      order by userGender ASC
     `);
     return res.json(results);
   } catch (e) {
