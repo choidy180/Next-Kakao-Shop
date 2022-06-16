@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { NotificationsOutline } from "react-ionicons";
 import styled from "styled-components";
+import { authService } from "../firebase/firebase";
 
 export default function MenuOver(props){
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -17,21 +18,26 @@ export default function MenuOver(props){
     document.getElementById("viewingMenuDetail").classList.toggle("FocusMenuDetail");
   }
   const viewInfo = () => {
-    console.log(typeof(props));
+    console.log(props);
+  }
+  const LogOutClick = async () => {
+    await authService.signOut();
+    await router.replace("/");
   }
   return (
     <>
       <ClickContent id="viewingMenuDetail">
         <Head>
           <Name>
-            {userInfo ? 
-              <Link href={"/login"}>
-                로그인이 필요해요!
-              </Link> : "최은지님 반갑습니다!"
+            {!props?.uid ?
+            <Link href={"/login"}>
+              로그인이 필요해요!
+            </Link>:
+              "최은지님 반갑습니다!"
             }
           </Name>
           <HeadIcon>
-            <span>비회원 주문 조회 &gt;</span>
+            {!props?.uid ? <span>비회원 주문 조회 &gt;</span> : <LogOut onClick={LogOutClick}>로그아웃</LogOut>}
           </HeadIcon>
         </Head>
         <img src="/images/banner/MenuDetail_Banner.png" alt="" onClick={viewInfo}/>
@@ -156,4 +162,12 @@ const MenuTab = styled.p`
   font-size: 1.2rem;
   padding: 18px 0;
   cursor: pointer;
+`
+const LogOut = styled.span`
+  color: #000;
+  font-size: 1.15rem;
+  cursor: pointer;
+  :hover{
+    text-decoration: underline;
+  }
 `

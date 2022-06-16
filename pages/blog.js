@@ -4,6 +4,7 @@ import styled from 'styled-components'
 
 export default function Blog(props){
   const {posts} = props;
+  console.log("123123123123");
   console.log(posts);
   return (
     <Container>
@@ -11,13 +12,13 @@ export default function Blog(props){
       {
         posts.map((item, i) => (
           <Box key={i}>
-            <h2>{item.userName}</h2>
-            <h2>{item.userEmail}</h2>
+            <h2>{item.user_email}</h2>
+            <h2>{item.careteAt}</h2>
             <ImageBox>
               <Image
-                src={`/images/user/${item.userImage}`}
+                src={`/images/feed/${item.idx}/${item.images}`}
                 layout={"fill"}
-                objectFit={"contain"}
+                objectFit={"cover"}
               />
             </ImageBox>
           </Box>
@@ -30,8 +31,7 @@ export default function Blog(props){
 export async function getStaticProps(context){
   try {
     const result = await sql_query(`
-      SELECT * FROM user
-      order by userGender ASC
+      SELECT * FROM feed
     `);
     let posts = JSON.parse(JSON.stringify(result))
     return {

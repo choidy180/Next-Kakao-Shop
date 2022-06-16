@@ -4,29 +4,27 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { sql_query } from "../lib/db";
 
-interface FeedProps {
-  thumbnail? : string;
-  name? : string;
-  date? : string;
-  uuid? : string;
-}
-
-export default function Feed({
-  thumbnail,
-  name,
-  date,
-  uuid,
-}: FeedProps){
+// interface FeedProps {
+//   thumbnail? : string;
+//   name? : string;
+//   date? : string;
+//   uuid? : string;
+//   props? : any;
+// }
+export default function Feed(props){
+  console.log(props);
   const container_Carousel:any = useRef();
-  const [imageCount, setImageCount] = useState(8);
+  const [imageCount, setImageCount] = useState(props.images.length);
   const [nowX, setNowX] = useState(0);
   const clickLeftButton = () => {
-    nowX !== 0 && setNowX((prop) => prop + (100 / imageCount));
+    !((nowX >= 0) && (nowX <= 5 )) && setNowX((prop) => prop + (100 / imageCount));
   }
   const clickRightButton = () => {
-    console.log(nowX);
-    nowX !== -87.5 && setNowX((prop) => prop - (100 / imageCount));
+    let coord = Number(-(100 - (100 / imageCount)));
+    console.log(coord);
+    nowX.toFixed() !== coord.toFixed() && setNowX((prop) => prop - (100 / imageCount));
   }
   useEffect(()=>{
     container_Carousel.current.style.transform=`translateX(${nowX}%)`;
@@ -53,8 +51,8 @@ export default function Feed({
           <ThumbWrapper>
             <ThumbBox>
               <Image
-                alt={name}
-                src={`/images/thumb/${thumbnail}`}
+                alt={props?.name}
+                src={`/images/thumb/${props?.thumbnail}`}
                 layout="fill"
                 objectFit="cover"
               />
@@ -62,18 +60,18 @@ export default function Feed({
           </ThumbWrapper>
         </HeadImage>
         <HeadText>
-          <FeedTitle>{name}</FeedTitle>
-          <FeedData>{date}</FeedData>
+          <FeedTitle>{props?.name}</FeedTitle>
+          <FeedData>{props?.date}</FeedData>
         </HeadText>
       </Head>
       <ContentContainer>
         <ContentWrapper>
           <ContentBox count={imageCount} ref={container_Carousel}>
-            {[0,1,2,3,4,5,6,0].map((_ , i) =>(
-              <ContentImage key={i}>
+            {props[0]?.images.map((_ , i) =>(
+              <ContentImage key={i} count={imageCount}>
                 <Image
                   alt={String(i)}
-                  src={`/images/feed/${uuid}/media_${_}.png`}
+                  src={`/images/feed/${_.Feed_idx}/${_.image}`}
                   layout="fill"
                   objectFit="contain"
                   quality={100}
@@ -124,9 +122,9 @@ export default function Feed({
           </Share>
         </FeedActive>
       </FeedInfo>
-      <LikeCount>좋아요 427명</LikeCount>
-      <TitFeed><p>시원함을 오래오래 🧊<br/>프렌즈와 드링크 타임 🍹</p></TitFeed>
-      <DescFeed><p>언제 어디서나 드링크를 시원하게 ❄️<br/>프렌즈와 쿨 썸머 파티 시-작! 🍻</p></DescFeed>
+      {/* <LikeCount>좋아요 {props?.count[0].user_email}명</LikeCount>
+      <TitFeed><p>{`${props.feed[0].title}`}</p></TitFeed>
+      <DescFeed><p>{`${props.feed[0].text}`}</p></DescFeed> */}
       <ProductList>
         {datadata.item.map((_, i) =>(
           <ProductContent key={i}>
@@ -156,8 +154,8 @@ export default function Feed({
       <ReplyInputBox>
         <ReplyInput
           type="text"
-          placeholder="로그인 후 이용해주세요."
-          disabled
+          placeholder={!props.displayName ? "로그인 후 이용해주세요." : "댓글을 입력하세요..."}
+          disabled={!props.displayName}
         />
         <ArrowUpCircleOutline
           width={"26px"}
@@ -168,6 +166,7 @@ export default function Feed({
     </Container>
   )
 }
+
 const Container = styled.div`
   width: 100%;
   display: flex;
@@ -256,7 +255,7 @@ const ContentBox = styled.div`
 const ContentImage = styled.div`
   float: left;
   position: relative;
-  width: 12.5%;
+  width: ${(props) => (100 / props.count)+"%"};
   height: 100%;
   border-radius: 12px;
   overflow: hidden;
@@ -411,4 +410,9 @@ const ReplyInput = styled.input`
     color: #aeaeaf;
     font-family: 'NEXON Lv1 Gothic OTF';
   }
+`
+
+const Ttttttttt = styled.div`
+  font-size: 6rem;
+  color: #000;
 `

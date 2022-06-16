@@ -2,8 +2,10 @@ import type { NextPage } from "next";
 import styled from "styled-components";
 import Feed from "../components/Feed";
 import Nav from "../components/Nav";
+import { sql_query } from "../lib/db";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
+  console.log(props);
   let ryan = {
     thumbnail: "RYAN.png",
     name: "라이언",
@@ -15,13 +17,36 @@ const Home: NextPage = () => {
       <Nav/>
       <Box>
         <Feed 
-          {...ryan}
+          {...ryan} {...props}
         />
       </Box>
     </Container>
   )
 }
-
+export async function getStaticProps(context){
+  try {
+    const get_Feed = await sql_query(`
+      SELECT * FROM feed order by createAt limit 3 
+    `)
+    const get_FeedI_mage = await sql_query(`
+      select * from feed_image
+      where Feed_idx = (SELECT idx FROM feed order by createAt limit 3)
+      order by sequence
+    `);
+    const get_Feed_like = await sql_query(`
+      select count(*) as user_email from Feed_like
+      where Feed_idx = (SELECT idx FROM feed order by createAt limit 3)
+    `)
+    let feed = JSON.parse(JSON.stringify(get_Feed));
+    let images = JSON.parse(JSON.stringify(get_FeedI_mage));
+    let count = JSON.parse(JSON.stringify(get_Feed_like));
+    return {
+      props: {feed,images,count}
+    };
+  } catch (e) {
+    return {props: {feed: false, images: false, count: false}}
+  }
+}
 const Container = styled.div`
   width: 100%;
   max-width: 640px;

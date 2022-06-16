@@ -7,9 +7,11 @@ module.exports = withBundleAnalyzer({
   env: {
     BASE_URL: process.env.BASE_URL,
   },
-
-  webpack(conf) {
-    conf.module.rules.push({
+  webpack:(config, { isServer }) => {
+    if(!isServer){
+      config.resolve.fallback.fs = false;
+    } 
+    config.module.rules.push({
       test: /\.svg$/,
       use: [
         {
@@ -32,7 +34,7 @@ module.exports = withBundleAnalyzer({
       ],
     });
     // 절대경로
-    conf.resolve.modules.push(__dirname);
-    return conf;
+    config.resolve.modules.push(__dirname);
+    return config;
   },
 });
