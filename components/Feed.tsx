@@ -1,30 +1,27 @@
 import styled from "styled-components";
-import { ArrowUpCircleOutline, BagOutline, ChatbubbleOutline, ChevronBackOutline, ChevronForwardOutline, HeartOutline, PaperPlaneOutline} from "react-ionicons";
+import { ArrowUpCircleOutline, BagOutline, ChatbubbleOutline, ChevronBackOutline, ChevronForwardOutline, HeartOutline, Images, PaperPlaneOutline} from "react-ionicons";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { sql_query } from "../lib/db";
 
-// interface FeedProps {
-//   thumbnail? : string;
-//   name? : string;
-//   date? : string;
-//   uuid? : string;
-//   props? : any;
-// }
 export default function Feed(props){
-  console.log(props);
+  let itemArray = props?.images.filter(item => item.Feed_idx === props?.images[0].Feed_idx).length;
+  let result = [];
+  props?.images.map((_, i)=>{
+    result.push(_.Feed_idx);
+  })
+  const findItem = props?.images.filter(item => item.Feed_idx === Array.from(new Set(result))[0]);
   const container_Carousel:any = useRef();
-  const [imageCount, setImageCount] = useState(props.images.length);
+  const [imageCount, setimageCount] = useState(props?.images.filter(item => item.Feed_idx === Array.from(new Set(result))[0]).length);
   const [nowX, setNowX] = useState(0);
   const clickLeftButton = () => {
-    !((nowX >= 0) && (nowX <= 5 )) && setNowX((prop) => prop + (100 / imageCount));
+    !((nowX <= 0) && (nowX >= -5 )) && setNowX((prop) => prop + (100 / 7));
   }
-  const clickRightButton = () => {
-    let coord = Number(-(100 - (100 / imageCount)));
-    console.log(coord);
-    nowX.toFixed() !== coord.toFixed() && setNowX((prop) => prop - (100 / imageCount));
+  const clickRightButton = (item) => {
+    console.log(nowX);
+    let coord = Number(-(100 - (100 / 7)));
+    nowX.toFixed() !== coord.toFixed() && setNowX((prop) => prop - (100 / 7));
   }
   useEffect(()=>{
     container_Carousel.current.style.transform=`translateX(${nowX}%)`;
@@ -67,10 +64,10 @@ export default function Feed(props){
       <ContentContainer>
         <ContentWrapper>
           <ContentBox count={imageCount} ref={container_Carousel}>
-            {props[0]?.images.map((_ , i) =>(
-              <ContentImage key={i} count={imageCount}>
+            {props?.images.filter(item => item.Feed_idx === Array.from(new Set(result))[0]).map((_, index)=>(
+              <ContentImage key={index} count={imageCount}>
                 <Image
-                  alt={String(i)}
+                  alt={String(index)}
                   src={`/images/feed/${_.Feed_idx}/${_.image}`}
                   layout="fill"
                   objectFit="contain"
@@ -122,9 +119,9 @@ export default function Feed(props){
           </Share>
         </FeedActive>
       </FeedInfo>
-      {/* <LikeCount>좋아요 {props?.count[0].user_email}명</LikeCount>
+      <LikeCount>좋아요 {props?.count[0].user_email}명</LikeCount>
       <TitFeed><p>{`${props.feed[0].title}`}</p></TitFeed>
-      <DescFeed><p>{`${props.feed[0].text}`}</p></DescFeed> */}
+      <DescFeed><p>{`${props.feed[0].text}`}</p></DescFeed>
       <ProductList>
         {datadata.item.map((_, i) =>(
           <ProductContent key={i}>

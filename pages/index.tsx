@@ -5,7 +5,6 @@ import Nav from "../components/Nav";
 import { sql_query } from "../lib/db";
 
 const Home: NextPage = (props) => {
-  console.log(props);
   let ryan = {
     thumbnail: "RYAN.png",
     name: "라이언",
@@ -26,22 +25,29 @@ const Home: NextPage = (props) => {
 export async function getStaticProps(context){
   try {
     const get_Feed = await sql_query(`
-      SELECT * FROM feed order by createAt limit 3 
+      SELECT * FROM feed order by createAt ASC limit 1
     `)
     const get_FeedI_mage = await sql_query(`
-      select * from feed_image
-      where Feed_idx = (SELECT idx FROM feed order by createAt limit 3)
-      order by sequence
+      select * from feed_image 
+      where Feed_idx in (
+      select * from (
+          SELECT idx FROM feed order by createAt ASC limit 1
+        ) as tmp
+      )
     `);
     const get_Feed_like = await sql_query(`
-      select count(*) as user_email from Feed_like
-      where Feed_idx = (SELECT idx FROM feed order by createAt limit 3)
+      select * from Feed_like
+      where Feed_idx in (
+      select * from (
+          SELECT idx FROM feed order by createAt ASC limit 1
+        ) as tmp
+      )
     `)
     let feed = JSON.parse(JSON.stringify(get_Feed));
     let images = JSON.parse(JSON.stringify(get_FeedI_mage));
     let count = JSON.parse(JSON.stringify(get_Feed_like));
     return {
-      props: {feed,images,count}
+      props: {feed, images, count}
     };
   } catch (e) {
     return {props: {feed: false, images: false, count: false}}
